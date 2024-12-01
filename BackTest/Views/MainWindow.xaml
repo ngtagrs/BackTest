@@ -1,0 +1,132 @@
+﻿<Window x:Class="BackTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:s="http://schemas.abtsoftware.co.uk/scichart"
+        xmlns:local="clr-namespace:BackTest" 
+        xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <TabControl>
+        <!-- Signal Design Tab -->
+        <TabItem Header="Indicator">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Mode Selector -->
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+                    <RadioButton Name="GuiModeRadio" Content="GUI Mode" IsChecked="True" Margin="10,0" Checked="ModeSwitch_Checked" />
+                    <RadioButton Name="PythonModeRadio" Content="Python Mode" Margin="10,0" Checked="ModeSwitch_Checked" />
+                </StackPanel>
+
+                <!-- GUI Mode -->
+                <StackPanel Name="GuiModePanel" Visibility="Visible" Grid.Row="1">
+                    <TextBlock Text="Create Indicator Using GUI" FontWeight="Bold" Margin="0,0,0,5" />
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="Parameters:" VerticalAlignment="Center" Margin="10,0" />
+                        <TextBox Name="IndicatorParameterInput" Width="200" Margin="0,0,10,0" />
+                    </StackPanel>
+                    <Button Content="Add Indicator" Width="150"/>
+                </StackPanel>
+
+                <!-- Python Mode -->
+                <StackPanel Name="PythonModePanel" Visibility="Collapsed" Grid.Row="1">
+                    <TextBlock Text="Create Indicator Using Python Script" FontWeight="Bold" Margin="0,0,0,5" />
+                    <TextBox Name="PythonScriptInput" AcceptsReturn="True" Height="200" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
+                    <Button Content="Validate Script" Width="150" Margin="0,10,0,0" Click="ValidatePythonScriptButton_Click" />
+                    <TextBlock Name="PythonScriptResult" Text="Script Result: OK" FontWeight="Bold" Foreground="Green" Visibility="Collapsed" />
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Grid.Row="2">
+                    <Button Content="Test" Command="{Binding TestIndicatorCommand}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Data"/>
+                        <DataGrid ItemsSource="{Binding EquityData.Values}">
+
+                        </DataGrid>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Signal">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Indicator List -->
+                <StackPanel Grid.Column="0" Margin="10">
+                    <TextBlock Text="Available Indicators" FontWeight="Bold" Margin="0,0,0,5" />
+                    <ListBox Name="IndicatorListBox" SelectionMode="Single" Height="200" />
+                    <Button Content="Load Market Data" Click="LoadMarketData_Click" Margin="0,10,0,0" />
+                </StackPanel>
+
+                <!-- Condition Editor and Preview -->
+                <StackPanel Grid.Column="1" Margin="10">
+                    <TextBlock Text="Condition Editor" FontWeight="Bold" Margin="0,0,0,5" />
+
+                    <!-- Condition Builder -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1.5*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Indicator Selection -->
+                        <ComboBox Name="IndicatorSelector" Grid.Column="0" Margin="5" />
+
+                        <!-- Comparison Operator -->
+                        <ComboBox Name="OperatorSelector" Grid.Column="1" Margin="5">
+                            <ComboBoxItem>&gt;</ComboBoxItem>
+                            <ComboBoxItem>&lt;</ComboBoxItem>
+                            <ComboBoxItem>=</ComboBoxItem>
+                        </ComboBox>
+
+                        <!-- Value Input -->
+                        <TextBox Name="ValueInput" Grid.Column="2" Margin="5" />
+
+                        <!-- Logic Operator -->
+                        <ComboBox Name="LogicSelector" Grid.Column="3" Margin="5">
+                            <ComboBoxItem>AND</ComboBoxItem>
+                            <ComboBoxItem>OR</ComboBoxItem>
+                        </ComboBox>
+                    </Grid>
+
+                    <Button Content="Add Condition" Click="AddConditionButton_Click" Margin="0,0,0,10" />
+
+                    <!-- Condition List -->
+                    <TextBlock Text="Conditions" FontWeight="Bold" Margin="0,0,5,5" />
+                    <ListBox Name="ConditionListBox" Height="100" />
+                    <Button Content="Remove Selected Condition" Click="RemoveConditionButton_Click" Margin="0,5,0,10" />
+
+                    <!-- Signal Preview -->
+                    <TextBlock Text="Signal Preview" FontWeight="Bold" Margin="0,0,0,5" />
+                    <TextBlock Name="SignalPreviewText" Text="Signal is Inactive" FontWeight="Bold" Foreground="Red" />
+
+                    <!-- Save/Load Signal -->
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Button Content="Save Signal" Click="SaveSignalButton_Click" Margin="5" />
+                        <Button Content="Load Signal" Click="LoadSignalButton_Click" Margin="5" />
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Strategy">
+            
+        </TabItem>
+
+        <TabItem Header="Data">
+
+        </TabItem>
+    </TabControl>
+</Window>
